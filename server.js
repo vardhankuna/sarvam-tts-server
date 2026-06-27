@@ -11,11 +11,7 @@ const MODEL = 'bulbul:v3';
 
 app.post('/tts', async (req, res) => {
   try {
-    const secret = req.headers['x-vapi-secret'];
-    if (secret !== process.env.VAPI_SECRET) {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
-
+   
     const { message } = req.body;
     if (!message || message.type !== 'voice-request') {
       return res.status(400).json({ error: 'Invalid message type' });
