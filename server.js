@@ -31,7 +31,7 @@ app.post('/tts', async (req, res) => {
         target_language_code: LANGUAGE,
         speaker: SPEAKER,
         model: MODEL,
-        speech_sample_rate: 8000,
+        speech_sample_rate: 16000,
         enable_preprocessing: true
       },
       {
@@ -39,17 +39,16 @@ app.post('/tts', async (req, res) => {
           'api-subscription-key': process.env.SARVAM_API_KEY,
           'Content-Type': 'application/json'
         },
-        timeout: 8000
+        timeout: 16000
       }
     );
 
     const audioBase64 = sarvamRes.data.audios[0];
     const wavBuffer = Buffer.from(audioBase64, 'base64');
-    const pcmBuffer = wavBuffer.slice(44);
 
-    res.setHeader('Content-Type', 'audio/raw');
-    res.setHeader('Content-Length', pcmBuffer.length);
-    res.send(pcmBuffer);
+    res.setHeader('Content-Type', 'audio/wav');
+    res.setHeader('Content-Length', wavBuffer.length);
+    res.send(wavBuffer);
 
     console.log(`[TTS] Done. Sent ${pcmBuffer.length} bytes`);
 
